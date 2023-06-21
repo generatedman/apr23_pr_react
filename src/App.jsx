@@ -5,7 +5,6 @@ import './App.scss';
 import usersFromServer from './api/users';
 import categoriesFromServer from './api/categories';
 import productsFromServer from './api/products';
-import categories from './api/categories';
 
 const products = productsFromServer.map((product) => {
   const category = categoriesFromServer.find(initCategory => initCategory.id === product.categoryId); // find by product.categoryId
@@ -23,7 +22,7 @@ const getFilteredProducts = (productsToFilter, user, query, category) => {
     return productsToFilter.filter(product => product.name.toLowerCase().includes(query.toLowerCase()));
   }
 
-  return productsToFilter.filter(product => product.user.name === user && product.name.includes(query) && product.category.title === category);
+  return productsToFilter.filter(product => product.user.name === user && product.name.includes(query));
 };
 
 export const App = () => {
@@ -206,7 +205,10 @@ export const App = () => {
 
                       <td
                         data-cy="ProductUser"
-                        className="has-text-link"
+                        className={classNames(
+                          { 'has-text-danger': product.user.sex === 'f' },
+                          { 'has-text-link': product.user.sex === 'm' },
+                        )}
                       >
                         {product.user.name}
                       </td>
